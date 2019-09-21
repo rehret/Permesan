@@ -1,0 +1,6 @@
+# CSharp / DotNet
+**/bin
+**/obj
+
+# Editor
+.vscode/
