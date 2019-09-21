@@ -53,7 +53,7 @@ namespace PermissionService.Services
             }
         }
 
-        protected virtual Task<IEnumerable<TPermission>> GetUserPermissions(TUser user)
+        protected virtual Task<IEnumerable<IEquatable<TPermission>>> GetUserPermissions(TUser user)
         {
             throw new NotImplementedException();
         }
@@ -63,7 +63,7 @@ namespace PermissionService.Services
             throw new NotImplementedException();
         }
 
-        private bool MeetsRequirement(Requirement<TPermission> requirement, IEnumerable<TPermission> userPermissions)
+        private bool MeetsRequirement(Requirement<TPermission> requirement, IEnumerable<IEquatable<TPermission>> userPermissions)
         {
             var meetsRequirement = true;
             var meetsSubRequirements = true;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,9 +12,11 @@ namespace PermissionService.Tests.Support.Services
     {
         public UnitTestPermissionService(IEnumerable<ProtectedContext<Permission>> protectedContexts) : base(protectedContexts) { }
 
-        protected override Task<IEnumerable<Permission>> GetUserPermissions(User user)
+        protected override Task<IEnumerable<IEquatable<Permission>>> GetUserPermissions(User user)
         {
-            return Task.FromResult(TestConstants.UserPermissions.Where((permission) => permission.UserId == user.Id));
+            return Task.FromResult(TestConstants.UserPermissions
+                .Where((permission) => permission.UserId == user.Id)
+                .Select((permission) => (IEquatable<Permission>)permission));
         }
 
         protected override async Task<bool> HasAccessForContext<TContext>(User user, ProtectedContextMember<Permission> privilege, TContext context)
