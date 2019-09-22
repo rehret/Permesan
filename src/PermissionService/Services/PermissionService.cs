@@ -33,6 +33,8 @@ namespace PermissionService.Services
                     return true;
                 }
 
+                var userPermissions = await GetUserPermissions(user);
+
                 if (privilege.ContextRequired)
                 {
                     if (context == null)
@@ -40,11 +42,11 @@ namespace PermissionService.Services
                         throw new ArgumentException($"Privilege \"{privilegeName}\" requires a context but the provided context is null");
                     }
 
-                    return await HasAccessForContext(user, privilege, context);
+                    return MeetsRequirement(privilege.Requirement, userPermissions) && await HasAccessForContext(user, privilege, context);
                 }
                 else
                 {
-                    return MeetsRequirement(privilege.Requirement, await GetUserPermissions(user));
+                    return MeetsRequirement(privilege.Requirement, userPermissions);
                 }
             }
             else
